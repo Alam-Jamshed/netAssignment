@@ -1,0 +1,53 @@
+﻿@model IEnumerable<ZeroHungerProject.Models.CollectionModel>
+
+@{
+    ViewBag.Title = "CollectionList";
+    Layout = "~/Views/ZHunger/_RestaurantLayout.cshtml";
+}
+
+<h2>CollectionList</h2>
+
+<p>
+    @Html.ActionLink("New Collection Request", "CreateCollection")
+</p>
+<table class="table">
+    <tr>
+        <th>ID</th>
+        <th>Collection Type</th>
+        <th>Collection Status</th>
+        <th>Collection Date</th>
+        <th>Collection Last Time</th>
+        <th>Food Type</th>
+        <th>Restaurant ID</th>
+        <th>Branch ID</th>
+        <th></th>
+
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Id)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.CollectionType)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.CollectionStatus)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.CollectionDate)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.FoodType)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.RestaurantId)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.BranchId)
+        </td>
+    </tr>
+}
+
+</table>

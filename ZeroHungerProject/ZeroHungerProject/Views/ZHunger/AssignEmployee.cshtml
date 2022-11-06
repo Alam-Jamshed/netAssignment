@@ -1,0 +1,67 @@
+﻿@model IEnumerable<ZeroHungerProject.Models.CollectionModel>
+
+@{
+    ViewBag.Title = "AssignEmployee";
+    Layout = "~/Views/ZHunger/_AdminLayout.cshtml";
+}
+
+<h2>Assign Employee</h2>
+
+
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.CollectionType)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.CollectionStatus)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.CollectionDate)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.CollectionLastTime)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.FoodType)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.RestaurantId)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.BranchId)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.CollectionType)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.CollectionStatus)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.CollectionDate)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.CollectionLastTime)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.FoodType)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.RestaurantId)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.BranchId)
+        </td>
+        <td>
+            @Html.ActionLink("Assign Employee", "SelectEmployee", new { id=item.Id }) 
+            
+        </td>
+    </tr>
+}
+
+</table>

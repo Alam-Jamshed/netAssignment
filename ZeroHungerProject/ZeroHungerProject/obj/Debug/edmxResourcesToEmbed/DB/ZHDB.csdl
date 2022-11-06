@@ -1,0 +1,251 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="ZeroHungerDBModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="Admin">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="Phone" Type="Int32" Nullable="false" />
+    <Property Name="UserId" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="User" Relationship="Self.FK_Admins_Users" FromRole="Admins" ToRole="Users" />
+  </EntityType>
+  <EntityType Name="Collection">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="CollectionType" Type="Int32" Nullable="false" />
+    <Property Name="CollectionStatus" Type="Int32" Nullable="false" />
+    <Property Name="CollectionDate" Type="DateTime" Nullable="false" Precision="0" />
+    <Property Name="CollectionLastTime" Type="Time" Precision="7" />
+    <Property Name="FoodType" Type="Int32" Nullable="false" />
+    <Property Name="RestaurantId" Type="Int32" Nullable="false" />
+    <Property Name="BranchId" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="RestaurantBranch" Relationship="Self.FK_Collections_RestaurantBranches" FromRole="Collections" ToRole="RestaurantBranches" />
+    <NavigationProperty Name="Restaurant" Relationship="Self.FK_Collections_Restaurants" FromRole="Collections" ToRole="Restaurants" />
+    <Property Name="EmployeeId" Type="Int32" />
+    <NavigationProperty Name="Employee" Relationship="ZeroHungerDBModel.FK_Collections_RestaurantBranches1" FromRole="Collection" ToRole="Employee" />
+  </EntityType>
+  <EntityType Name="Employee">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="Phone" Type="Int32" Nullable="false" />
+    <Property Name="UserId" Type="Int32" Nullable="false" />
+    <Property Name="LocationId" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="Location" Relationship="Self.FK_Employees_Locations" FromRole="Employees" ToRole="Locations" />
+    <NavigationProperty Name="User" Relationship="Self.FK_Employees_Users" FromRole="Employees" ToRole="Users" />
+    <NavigationProperty Name="Collections" Relationship="ZeroHungerDBModel.FK_Collections_RestaurantBranches1" FromRole="Employee" ToRole="Collection" />
+  </EntityType>
+  <EntityType Name="Location">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <NavigationProperty Name="Employees" Relationship="Self.FK_Employees_Locations" FromRole="Locations" ToRole="Employees" />
+    <NavigationProperty Name="RestaurantBranches" Relationship="Self.FK_RestaurantBranches_Locations" FromRole="Locations" ToRole="RestaurantBranches" />
+  </EntityType>
+  <EntityType Name="RestaurantBranch">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Address" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="RestaurantId" Type="Int32" Nullable="false" />
+    <Property Name="LocationId" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="Collections" Relationship="Self.FK_Collections_RestaurantBranches" FromRole="RestaurantBranches" ToRole="Collections" />
+    <NavigationProperty Name="Location" Relationship="Self.FK_RestaurantBranches_Locations" FromRole="RestaurantBranches" ToRole="Locations" />
+    <NavigationProperty Name="Restaurant" Relationship="Self.FK_RestaurantBranches_Restaurants" FromRole="RestaurantBranches" ToRole="Restaurants" />
+  </EntityType>
+  <EntityType Name="RestaurantOwner">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="Phone" Type="Int32" Nullable="false" />
+    <Property Name="UserId" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="Restaurants" Relationship="Self.FK_Restaurants_RestaurantOwners" FromRole="RestaurantOwners" ToRole="Restaurants" />
+  </EntityType>
+  <EntityType Name="Restaurant">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="OwnerId" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="Collections" Relationship="Self.FK_Collections_Restaurants" FromRole="Restaurants" ToRole="Collections" />
+    <NavigationProperty Name="RestaurantBranches" Relationship="Self.FK_RestaurantBranches_Restaurants" FromRole="Restaurants" ToRole="RestaurantBranches" />
+    <NavigationProperty Name="RestaurantOwner" Relationship="Self.FK_Restaurants_RestaurantOwners" FromRole="Restaurants" ToRole="RestaurantOwners" />
+  </EntityType>
+  <EntityType Name="User">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="UserName" Type="String" MaxLength="12" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="Email" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="Password" Type="String" MaxLength="16" FixedLength="false" Unicode="false" Nullable="false" />
+    <NavigationProperty Name="Admins" Relationship="Self.FK_Admins_Users" FromRole="Users" ToRole="Admins" />
+    <NavigationProperty Name="Employees" Relationship="Self.FK_Employees_Users" FromRole="Users" ToRole="Employees" />
+    <Property Name="UserType" Type="Int32" Nullable="false" />
+  </EntityType>
+  <Association Name="FK_Admins_Users">
+    <End Role="Users" Type="Self.User" Multiplicity="1" />
+    <End Role="Admins" Type="Self.Admin" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Users">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Admins">
+        <PropertyRef Name="UserId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Collections_RestaurantBranches">
+    <End Role="RestaurantBranches" Type="Self.RestaurantBranch" Multiplicity="1" />
+    <End Role="Collections" Type="Self.Collection" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="RestaurantBranches">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Collections">
+        <PropertyRef Name="BranchId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Collections_Restaurants">
+    <End Role="Restaurants" Type="Self.Restaurant" Multiplicity="1" />
+    <End Role="Collections" Type="Self.Collection" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Restaurants">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Collections">
+        <PropertyRef Name="RestaurantId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Employees_Locations">
+    <End Role="Locations" Type="Self.Location" Multiplicity="1" />
+    <End Role="Employees" Type="Self.Employee" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Locations">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Employees">
+        <PropertyRef Name="LocationId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Employees_Users">
+    <End Role="Users" Type="Self.User" Multiplicity="1" />
+    <End Role="Employees" Type="Self.Employee" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Users">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Employees">
+        <PropertyRef Name="UserId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_RestaurantBranches_Locations">
+    <End Role="Locations" Type="Self.Location" Multiplicity="1" />
+    <End Role="RestaurantBranches" Type="Self.RestaurantBranch" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Locations">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="RestaurantBranches">
+        <PropertyRef Name="LocationId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_RestaurantBranches_Restaurants">
+    <End Role="Restaurants" Type="Self.Restaurant" Multiplicity="1" />
+    <End Role="RestaurantBranches" Type="Self.RestaurantBranch" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Restaurants">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="RestaurantBranches">
+        <PropertyRef Name="RestaurantId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Restaurants_RestaurantOwners">
+    <End Role="RestaurantOwners" Type="Self.RestaurantOwner" Multiplicity="1" />
+    <End Role="Restaurants" Type="Self.Restaurant" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="RestaurantOwners">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Restaurants">
+        <PropertyRef Name="OwnerId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="ZeroHungerDBEntities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="Admins" EntityType="Self.Admin" />
+    <EntitySet Name="Collections" EntityType="Self.Collection" />
+    <EntitySet Name="Employees" EntityType="Self.Employee" />
+    <EntitySet Name="Locations" EntityType="Self.Location" />
+    <EntitySet Name="RestaurantBranches" EntityType="Self.RestaurantBranch" />
+    <EntitySet Name="RestaurantOwners" EntityType="Self.RestaurantOwner" />
+    <EntitySet Name="Restaurants" EntityType="Self.Restaurant" />
+    <EntitySet Name="Users" EntityType="Self.User" />
+    <AssociationSet Name="FK_Admins_Users" Association="Self.FK_Admins_Users">
+      <End Role="Users" EntitySet="Users" />
+      <End Role="Admins" EntitySet="Admins" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Collections_RestaurantBranches" Association="Self.FK_Collections_RestaurantBranches">
+      <End Role="RestaurantBranches" EntitySet="RestaurantBranches" />
+      <End Role="Collections" EntitySet="Collections" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Collections_Restaurants" Association="Self.FK_Collections_Restaurants">
+      <End Role="Restaurants" EntitySet="Restaurants" />
+      <End Role="Collections" EntitySet="Collections" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Employees_Locations" Association="Self.FK_Employees_Locations">
+      <End Role="Locations" EntitySet="Locations" />
+      <End Role="Employees" EntitySet="Employees" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Employees_Users" Association="Self.FK_Employees_Users">
+      <End Role="Users" EntitySet="Users" />
+      <End Role="Employees" EntitySet="Employees" />
+    </AssociationSet>
+    <AssociationSet Name="FK_RestaurantBranches_Locations" Association="Self.FK_RestaurantBranches_Locations">
+      <End Role="Locations" EntitySet="Locations" />
+      <End Role="RestaurantBranches" EntitySet="RestaurantBranches" />
+    </AssociationSet>
+    <AssociationSet Name="FK_RestaurantBranches_Restaurants" Association="Self.FK_RestaurantBranches_Restaurants">
+      <End Role="Restaurants" EntitySet="Restaurants" />
+      <End Role="RestaurantBranches" EntitySet="RestaurantBranches" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Restaurants_RestaurantOwners" Association="Self.FK_Restaurants_RestaurantOwners">
+      <End Role="RestaurantOwners" EntitySet="RestaurantOwners" />
+      <End Role="Restaurants" EntitySet="Restaurants" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Collections_RestaurantBranches1" Association="ZeroHungerDBModel.FK_Collections_RestaurantBranches1">
+      <End Role="Employee" EntitySet="Employees" />
+      <End Role="Collection" EntitySet="Collections" />
+    </AssociationSet>
+  </EntityContainer>
+  <Association Name="FK_Collections_RestaurantBranches1">
+    <End Type="ZeroHungerDBModel.Employee" Role="Employee" Multiplicity="0..1" />
+    <End Type="ZeroHungerDBModel.Collection" Role="Collection" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Employee">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Collection">
+        <PropertyRef Name="EmployeeId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+</Schema>
