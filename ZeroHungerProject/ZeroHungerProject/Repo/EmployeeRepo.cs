@@ -22,21 +22,25 @@ namespace ZeroHungerProject.Repo
             db.SaveChanges();
             return;
         }
-        public static List<EmployeeModel> getEMP()
+        public static List<EmployeeModel> getEMP(int id)
         {
+            RestaurantBranchModel rb = RestaurantBranchRepo.GetBranch(id);
             var db = new ZeroHungerDBEntities();
             var employees = new List<EmployeeModel>();
 
             foreach (var emp in db.Employees)
             {
-                employees.Add(new EmployeeModel()
+                if (emp.LocationId == rb.LocationId)
                 {
-                    Id = emp.Id,
-                    Name = emp.Name,
-                    Phone = emp.Phone,
-                    LocationId = emp.LocationId,
-                    UserId = emp.UserId,
-                });
+                    employees.Add(new EmployeeModel()
+                    {
+                        Id = emp.Id,
+                        Name = emp.Name,
+                        Phone = emp.Phone,
+                        LocationId = emp.LocationId,
+                        UserId = emp.UserId,
+                    });
+                }
             }
 
             return employees;

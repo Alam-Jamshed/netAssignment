@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Data.Metadata.Edm;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Web;
@@ -46,7 +47,11 @@ namespace ZeroHungerProject.Repo
         public static void CreateCol(CollectionModel col)
         {
             var DBcol = new Collection();
-            DBcol.CollectionDate=col.CollectionDate;
+            if(col.CollectionType == 2)
+            {
+                DBcol.CollectionDate = DateTime.Today.Date;
+            }
+            else { DBcol.CollectionDate = col.CollectionDate; }
             DBcol.CollectionLastTime = col.CollectionLastTime;
             DBcol.CollectionStatus = col.CollectionStatus;
             DBcol.CollectionType = col.CollectionType;
@@ -67,17 +72,36 @@ namespace ZeroHungerProject.Repo
 
             foreach (var collection in db.Collections)
             {
-                collections.Add(new CollectionModel()
+                if (collection.EmployeeId != null)
                 {
-                    Id = collection.Id,
-                    CollectionType = collection.CollectionType,
-                    CollectionStatus = collection.CollectionStatus,
-                    CollectionDate = collection.CollectionDate,
-                    CollectionLastTime = collection.CollectionLastTime,
-                    FoodType = collection.FoodType,
-                    RestaurantId = collection.RestaurantId,
-                    BranchId = collection.BranchId
-                });
+                    collections.Add(new CollectionModel()
+                    {
+                        Id = collection.Id,
+                        CollectionType = collection.CollectionType,
+                        CollectionStatus = collection.CollectionStatus,
+                        CollectionDate = collection.CollectionDate,
+                        CollectionLastTime = collection.CollectionLastTime,
+                        FoodType = collection.FoodType,
+                        RestaurantId = collection.RestaurantId,
+                        BranchId = collection.BranchId,
+                        EmployeeId = collection.EmployeeId
+                    });
+                }
+                else
+                {
+                    collections.Add(new CollectionModel()
+                    {
+                        Id = collection.Id,
+                        CollectionType = collection.CollectionType,
+                        CollectionStatus = collection.CollectionStatus,
+                        CollectionDate = collection.CollectionDate,
+                        CollectionLastTime = collection.CollectionLastTime,
+                        FoodType = collection.FoodType,
+                        RestaurantId = collection.RestaurantId,
+                        BranchId = collection.BranchId,
+                        EmployeeId = -1
+                    });
+                }
             }
 
             return collections;
@@ -120,6 +144,15 @@ namespace ZeroHungerProject.Repo
             collection.EmployeeId = empId;
             db.SaveChanges();
             return;
+        }
+
+        public static int GetBranch(int colId)
+        {
+            var db = new ZeroHungerDBEntities();
+            var dbCollection = (from c in db.Collections
+                              where c.Id == colId
+                              select c).SingleOrDefault();
+            return (dbCollection.BranchId);
         }
     }
 }

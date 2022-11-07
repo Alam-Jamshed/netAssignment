@@ -12,7 +12,6 @@
 </p>
 <table class="table">
     <tr>
-        <th>ID</th>
         <th>Collection Type</th>
         <th>Collection Status</th>
         <th>Collection Date</th>
@@ -26,27 +25,50 @@
 
 @foreach (var item in Model) {
     <tr>
+
+        @{
+            if (item.CollectionType == 1)
+            {
+                <td>Same Day</td>
+            }
+            else
+            {
+                <td>Different Day</td>
+            }
+        }
+        @{
+            if (item.CollectionStatus == 1)
+            {
+                <td>Not Collected</td>
+            }
+            else
+            {
+                <td>Collected</td>
+            }
+        }
         <td>
-            @Html.DisplayFor(modelItem => item.Id)
+            @Html.DisplayFor(modelItem => item.CollectionDate.Date)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.CollectionType)
+            @Html.DisplayFor(modelItem => item.CollectionLastTime)
         </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.CollectionStatus)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.CollectionDate)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.FoodType)
-        </td>
+        @{
+            if (item.FoodType == 1)
+            {
+                <td>Perishable</td>
+            }
+            else
+            {
+                <td>Not-Perishable</td>
+            }
+        }
         <td>
             @Html.DisplayFor(modelItem => item.RestaurantId)
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.BranchId)
         </td>
+
     </tr>
 }
 

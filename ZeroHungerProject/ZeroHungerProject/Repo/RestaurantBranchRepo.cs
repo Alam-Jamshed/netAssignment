@@ -22,5 +22,18 @@ namespace ZeroHungerProject.Repo
             resB.LocationId = dbResB.LocationId;
             return resB;
         }
+        public static RestaurantBranchModel GetBranch(int id)
+        {
+            var db = new ZeroHungerDBEntities();
+            var dbResB = (from d in db.RestaurantBranches
+                          where d.Id == id
+                          select d).SingleOrDefault();
+            RestaurantBranchModel resB = new RestaurantBranchModel();
+            resB.Id = dbResB.Id;
+            resB.RestaurantId = dbResB.RestaurantId;
+            resB.Address = dbResB.Address;
+            resB.LocationId = dbResB.LocationId;
+            return resB;
+        }
     }
 }

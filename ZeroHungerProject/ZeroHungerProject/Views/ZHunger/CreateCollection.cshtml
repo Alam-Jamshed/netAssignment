@@ -16,18 +16,10 @@
         <hr />
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
         <div class="form-group">
-            @Html.LabelFor(model => model.CollectionType, htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.Label("Collection Type", htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.CollectionType, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.DropDownListFor(model => model.CollectionType, ViewBag.CollectionType as SelectList,  new { @class = "form-control" } )
                 @Html.ValidationMessageFor(model => model.CollectionType, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.CollectionStatus, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.CollectionStatus, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.CollectionStatus, "", new { @class = "text-danger" })
             </div>
         </div>
 
@@ -47,9 +39,9 @@
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.FoodType, htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.Label("Food Type", htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.FoodType, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.DropDownListFor(model => model.FoodType, ViewBag.FoodType as SelectList,  new { @class = "form-control" } )
                 @Html.ValidationMessageFor(model => model.FoodType, "", new { @class = "text-danger" })
             </div>
         </div>

@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using ZeroHungerProject.DB;
 using ZeroHungerProject.Models;
 using ZeroHungerProject.Repo;
+using static System.Collections.Specialized.BitVector32;
 
 namespace ZeroHungerProject.Controllers
 {
@@ -75,51 +77,117 @@ namespace ZeroHungerProject.Controllers
         [HttpGet]
         public ActionResult AdminDashboard()
         {
-            AdminModel admin = AdminRepo.Find((int)Session["userID"]);
-            var col = CollectionRepo.GetAll();
-            return View(col);
+            if (Session["userId"] != null)
+            {
+                AdminModel admin = AdminRepo.Find((int)Session["userID"]);
+                var col = CollectionRepo.GetAll();
+                return View(col);
+            }
+
+            return RedirectToAction("GoToLogin");
+
         }
         [HttpGet]
         public ActionResult AssignEmployee()
         {
-            var col = CollectionRepo.GetSpecific();
-            return View(col);
+            if (Session["userId"] != null)
+            {
+                var col = CollectionRepo.GetSpecific();
+                return View(col);
+            }
+            return RedirectToAction("GoToLogin");
+
+            
         }
         [HttpGet]
         public ActionResult SelectEmployee(int id)
         {
-            Session["colID"] = id;
+            if (Session["userId"] != null)
+            {
+                Session["colID"] = id;
+                var BranchId = CollectionRepo.GetBranch(id);
+                var emp = EmployeeRepo.getEMP(BranchId);
+                if (emp.Count==0)
+                {
+                    TempData["alert"] = "No employees are available in this locaiton!";
+                    return RedirectToAction("AssignEmployee");
+                }
+                return View(emp);
+            }
+            return RedirectToAction("GoToLogin");
 
-            var emp = EmployeeRepo.getEMP();
-            return View(emp);
+            
         }
         [HttpGet]
         public ActionResult EmployeeSelected(int id)
         {
+            if (Session["userId"] != null)
+            {
+                CollectionRepo.SetEmployee((int)Session["colId"], id);
+                return RedirectToAction("AdminDashboard");
+            }
+            return RedirectToAction("GoToLogin");
 
-            CollectionRepo.SetEmployee((int)Session["colId"], id);
-            return RedirectToAction("AdminDashboard");
+            
         }
         [HttpGet]
         public ActionResult CollectionList()
         {
-            var collections = CollectionRepo.Get((int)Session["userId"]);
-            return View(collections);
+            if (Session["userId"] != null)
+            {
+                var collections = CollectionRepo.Get((int)Session["userId"]);
+                return View(collections);
+            }
+            return RedirectToAction("GoToLogin");
+
+            
         }
         [HttpGet]
         public ActionResult CreateCollection()
         {
-            return View();
+            if (Session["userId"] != null)
+            {
+                List<SelectListItem> CollectionType = new List<SelectListItem>();
+                CollectionType.Add(new SelectListItem { Text = "Different Day", Value = "1", Selected = true });
+                CollectionType.Add(new SelectListItem { Text = "Same Day", Value = "2" });
+                ViewBag.CollectionType = CollectionType;
+
+                List<SelectListItem> FoodType = new List<SelectListItem>();
+                FoodType.Add(new SelectListItem { Text = "Perishable", Value = "1", Selected = true });
+                FoodType.Add(new SelectListItem { Text = "Non Perishable", Value = "2" });
+                ViewBag.FoodType = FoodType;
+
+                return View();
+            }
+            return RedirectToAction("GoToLogin");
         }
         [HttpPost]
         public ActionResult CreateCollection(CollectionModel col)
         {
-            var rest = RestaurantRepo.Get((int)Session["userId"]);
-            var branch = RestaurantBranchRepo.Get((int)rest.Id);
-            col.RestaurantId = rest.Id;
-            col.BranchId = branch.Id;
-            CollectionRepo.CreateCol(col);
-            return RedirectToAction("CollectionList");
+            if (Session["userId"] != null)
+            {
+                var rest = RestaurantRepo.Get((int)Session["userId"]);
+                var branch = RestaurantBranchRepo.Get((int)rest.Id);
+                col.RestaurantId = rest.Id;
+                col.BranchId = branch.Id;
+                CollectionRepo.CreateCol(col);
+                return RedirectToAction("CollectionList");
+            }
+            return RedirectToAction("GoToLogin");
+        }
+        public ActionResult Logout()
+        {
+            if (Session["userId"] != null)
+            {
+                Session.Clear();
+                Session.Abandon();
+            }
+            return RedirectToAction("Login");
+        }
+        public ActionResult GoToLogin()
+        {
+            TempData["alert"] = "Please Login First";
+            return RedirectToAction("Login");
         }
     }
 }

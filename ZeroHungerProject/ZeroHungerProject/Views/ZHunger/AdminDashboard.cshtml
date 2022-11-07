@@ -33,32 +33,66 @@
         <th>
             @Html.DisplayNameFor(model => model.BranchId)
         </th>
+        <th>
+            @Html.DisplayNameFor(model => model.EmployeeId)
+        </th>
         <th></th>
     </tr>
 
 @foreach (var item in Model) {
     <tr>
+        @{
+            if (item.CollectionType == 1)
+            {
+                <td>Same Day</td>
+            }
+            else
+            {
+                <td>Different Day</td>
+            }
+        }
+        @{
+            if (item.CollectionStatus == 1)
+            {
+                <td>Not Collected</td>
+            }
+            else
+            {
+                <td>Collected</td>
+            }
+        }
         <td>
-            @Html.DisplayFor(modelItem => item.CollectionType)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.CollectionStatus)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.CollectionDate)
+            @Html.DisplayFor(modelItem => item.CollectionDate.Date)
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.CollectionLastTime)
         </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.FoodType)
-        </td>
+        @{
+            if (item.FoodType == 1)
+            {
+                <td>Perishable</td>
+            }
+            else
+            {
+                <td>Not-Perishable</td>
+            }
+        }
         <td>
             @Html.DisplayFor(modelItem => item.RestaurantId)
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.BranchId)
         </td>
+        @{
+            if (item.EmployeeId == -1)
+            {
+                <td>No Employee Assigned</td>
+            }
+            else
+            {
+                <td>@item.EmployeeId</td>
+            }
+        }
     </tr>
 }
 

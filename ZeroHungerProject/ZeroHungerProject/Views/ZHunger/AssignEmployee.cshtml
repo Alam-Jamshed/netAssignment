@@ -4,7 +4,15 @@
     ViewBag.Title = "AssignEmployee";
     Layout = "~/Views/ZHunger/_AdminLayout.cshtml";
 }
-
+@{if (TempData["alert"] != null)
+    {
+        <div class="row d-flex justify-content-center">
+            <div class="col-sm-6">
+                <div class="alert alert-danger text-center">@TempData["alert"]</div>
+            </div>
+        </div>
+    }
+}
 <h2>Assign Employee</h2>
 
 
@@ -34,34 +42,37 @@
         <th></th>
     </tr>
 
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.CollectionType)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.CollectionStatus)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.CollectionDate)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.CollectionLastTime)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.FoodType)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.RestaurantId)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.BranchId)
-        </td>
-        <td>
-            @Html.ActionLink("Assign Employee", "SelectEmployee", new { id=item.Id }) 
-            
-        </td>
-    </tr>
-}
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.CollectionType)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CollectionStatus)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CollectionDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CollectionLastTime)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.FoodType)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.RestaurantId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.BranchId)
+            </td>
+            <td>
+                @Html.ActionLink("Assign Employee", "SelectEmployee", new { id = item.Id })
+
+            </td>
+        </tr>
+    }
+
+
 
 </table>
