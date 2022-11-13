@@ -154,5 +154,41 @@ namespace ZeroHungerProject.Repo
                               select c).SingleOrDefault();
             return (dbCollection.BranchId);
         }
+
+        public static List<CollectionModel> EmpCollections(int id)
+        {
+            var db = new ZeroHungerDBEntities();
+            
+            var collections = new List<CollectionModel>();
+
+            foreach (var collection in db.Collections)
+            {
+                if (collection.EmployeeId == id)
+                {
+                    collections.Add(new CollectionModel()
+                    {
+                        Id = collection.Id,
+                        CollectionType = collection.CollectionType,
+                        CollectionStatus = collection.CollectionStatus,
+                        CollectionDate = collection.CollectionDate,
+                        CollectionLastTime = collection.CollectionLastTime,
+                        FoodType = collection.FoodType,
+                        RestaurantId = collection.RestaurantId,
+                        BranchId = collection.BranchId
+
+                    });
+                }
+            }
+            return collections;
+        }
+        public static void Update(int id)
+        {
+            var db = new ZeroHungerDBEntities();
+            var dbCollections = (from c in db.Collections
+                                 where c.Id == id
+                                 select c).SingleOrDefault();
+            dbCollections.CollectionStatus = 2;
+            db.SaveChanges();
+        }
     }
 }

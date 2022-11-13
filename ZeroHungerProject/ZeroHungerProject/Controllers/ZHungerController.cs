@@ -34,7 +34,7 @@ namespace ZeroHungerProject.Controllers
             }
             else if ((int)user.UserType == 2)
             {
-                return RedirectToAction("Index");
+                return RedirectToAction("EmployeeDashboard");
             }
 
             return RedirectToAction("CollectionList");
@@ -46,32 +46,17 @@ namespace ZeroHungerProject.Controllers
             var locations = new List<LocationModel>();
             locations = LocationRepo.Get();
             ViewBag.Locations = locations;
-            /*var user = new UserModel();
-            var emp = new EmployeeModel();
-            var model = (user, emp);
-            return View(model);*/
-
-            /*var model = new UserEmployee();
-            model.user = new UserModel();
-            model.emp = new EmployeeModel();*/
             return View();
         }
         [HttpPost]
         public ActionResult RegisterEmployee(UserEmployee useremp)
         {
-            var user = new UserModel();
-            user.UserName = useremp.UserName;
-            user.Email = useremp.Email;
-            user.Password = useremp.Password;
-            user.UserType = 2;
-            UserRepo.Create(user);
+            useremp.User.UserType = 2;
+            UserRepo.Create(useremp.User);
+ 
+            useremp.Emp.UserId = UserRepo.LastId(useremp.User);
+            EmployeeRepo.Create(useremp.Emp);
 
-            var employee = new EmployeeModel();
-            employee.Name = useremp.Name;
-            employee.Phone = useremp.Phone;
-            employee.LocationId = useremp.LocationId;
-            employee.UserId = UserRepo.LastId(user);
-            EmployeeRepo.Create(employee);
             return RedirectToAction("Login");
         }
         [HttpGet]
@@ -175,6 +160,28 @@ namespace ZeroHungerProject.Controllers
             }
             return RedirectToAction("GoToLogin");
         }
+
+        public ActionResult EmployeeDashboard()
+        {
+            if (Session["userId"] != null)
+            {
+                var Employee = EmployeeRepo.Get((int)Session["userId"]);
+                var collections = CollectionRepo.EmpCollections((int)Employee.Id);
+                return View(collections);
+            }
+            return RedirectToAction("GoToLogin");
+        }
+        public ActionResult CollectionUpdate(int id)
+        {
+            if (Session["userId"] != null)
+            {
+                CollectionRepo.Update(id);
+                TempData["message"] = "Thank you for your help!";
+                return RedirectToAction("EmployeeDashboard");
+            }
+            return RedirectToAction("GoToLogin");
+        }
+
         public ActionResult Logout()
         {
             if (Session["userId"] != null)
@@ -189,5 +196,7 @@ namespace ZeroHungerProject.Controllers
             TempData["alert"] = "Please Login First";
             return RedirectToAction("Login");
         }
+
+
     }
 }

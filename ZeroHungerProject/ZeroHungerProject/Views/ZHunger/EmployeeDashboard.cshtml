@@ -1,0 +1,90 @@
+﻿@model IEnumerable<ZeroHungerProject.Models.CollectionModel>
+
+@{
+    ViewBag.Title = "EmployeeDashboard";
+    Layout = "~/Views/ZHunger/_EmployeeLayout.cshtml";
+}
+@{if (TempData["message"] != null)
+    {
+        <div class="row d-flex justify-content-center">
+            <div class="col-sm-6">
+                <div class="alert alert-dismissable text-center">@TempData["message"]</div>
+            </div>
+        </div>
+    }
+}
+<h2>Employee Dashboard</h2>
+
+
+<table class="table">
+    <tr>
+        <th>Collection Type</th>
+        <th>Collection Status</th>
+        <th>Collection Date</th>
+        <th>Collection Last Time</th>
+        <th>Food Type</th>
+        <th>Restaurant ID</th>
+        <th>Branch ID</th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+
+            @{
+                if (item.CollectionType == 1)
+                {
+                    <td>Same Day</td>
+                }
+                else
+                {
+                    <td>Different Day</td>
+                }
+            }
+            @{
+                if (item.CollectionStatus == 1)
+                {
+                    <td>Not Collected</td>
+                }
+                else
+                {
+                    <td>Collected</td>
+                }
+            }
+            <td>
+                @Html.DisplayFor(modelItem => item.CollectionDate.Date)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CollectionLastTime)
+            </td>
+            @{
+                if (item.FoodType == 1)
+                {
+                    <td>Perishable</td>
+                }
+                else
+                {
+                    <td>Not-Perishable</td>
+                }
+            }
+            <td>
+                @Html.DisplayFor(modelItem => item.RestaurantId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.BranchId)
+            </td>
+            @{
+                if (item.CollectionStatus == 1)
+                {
+                    <td>
+                        <a href="/ZHunger/CollectionUpdate/@item.Id" class="btn btn-info">Collection Completed</a>
+                    </td>
+                }
+            }
+
+
+        </tr>
+    }
+
+</table>

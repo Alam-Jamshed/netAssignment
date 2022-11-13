@@ -681,6 +681,7 @@
     <Content Include="Views\ZHunger\AdminDashboard.cshtml" />
     <Content Include="Views\ZHunger\AssignEmployee.cshtml" />
     <Content Include="Views\ZHunger\SelectEmployee.cshtml" />
+    <Content Include="Views\ZHunger\EmployeeDashboard.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

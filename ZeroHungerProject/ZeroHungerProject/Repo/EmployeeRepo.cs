@@ -45,5 +45,18 @@ namespace ZeroHungerProject.Repo
 
             return employees;
         }
+
+        public static EmployeeModel Get(int id)
+        {
+            var db = new ZeroHungerDBEntities();
+            var emp = (from a in db.Employees
+                      where a.UserId == id
+                      select a).SingleOrDefault();
+            EmployeeModel employee = new EmployeeModel();
+            employee.Name = emp.Name;
+            employee.Phone = emp.Phone;
+            employee.Id = emp.Id;
+            return employee;
+        }
     }
 }
